@@ -31,7 +31,9 @@ python -m venv .venv
 ### 3. Install dependencies
 
 ```bash
+cd ..
 pip install -r requirements.txt
+cd ims
 ```
 
 ### 4. Setup database
