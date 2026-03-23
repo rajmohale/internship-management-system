@@ -17,7 +17,7 @@ A full-stack Django web application for managing internships, student applicatio
 
 ```bash
 git clone https://github.com/rajmohale/internship-management-system.git
-cd internship-management-system/ims
+cd internship-management-system
 ```
 
 ### 2. Create virtual environment
@@ -31,9 +31,7 @@ python -m venv .venv
 ### 3. Install dependencies
 
 ```bash
-cd ..
 pip install -r requirements.txt
-cd ims
 ```
 
 ### 4. Setup database
