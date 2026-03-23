@@ -13,19 +13,34 @@ A full-stack Django web application for managing internships, student applicatio
 
 ## Setup
 
-### 1. Install Dependencies
+### 1. Clone project
+
+```bash
+git clone https://github.com/rajmohale/internship-management-system.git
+cd internship-management-system/ims
+```
+
+### 2. Create virtual environment
+
+```bash
+python -m venv .venv
+
+.venv\Scripts\activate
+```
+
+### 3. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Run Migrations
+### 4. Setup database
 
 ```bash
 python manage.py migrate
 ```
 
-### 3. Create Superuser (Admin)
+### 5. Create Superuser (Admin)
 
 ```bash
 python manage.py createsuperuser
@@ -33,7 +48,7 @@ python manage.py createsuperuser
 
 Use email as username when prompted.
 
-### 4. Run Development Server
+### 6. Run Development Server
 
 ```bash
 python manage.py runserver
