@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h2>My Applications</h2>
+
+<table class="table table-bordered">
+
+<thead class="table-dark">
+<tr>
+<th>Internship</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for app in applications %}
+
+<tr>
+
+<td>{{ app.internship.title }}</td>
+
+<td>{{ app.status }}</td>
+
+<td>
+
+<a href="{{ app.resume.url }}" class="btn btn-sm btn-secondary">
+Resume
+</a>
+
+<a href="{% url 'submit_offer_letter' app.internship.id %}" class="btn btn-sm btn-primary">
+Upload Offer Letter
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+{% endblock %}

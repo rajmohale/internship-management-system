@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+
+{% block title %}Faculty Dashboard{% endblock %}
+{% block page_title %}Faculty Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <h2 class="mb-4 text-primary fw-bold">Faculty Dashboard</h2>
+
+    <!-- Summary Cards -->
+    <div class="row g-4 mb-5">
+        <div class="col-xl-2 col-md-4 col-sm-6">
+            <div class="card text-white shadow-lg rounded-4 p-3 border-0" style="background: linear-gradient(135deg,#4e73df,#224abe);">
+                <div class="card-body text-center">
+                    <i class="bi bi-briefcase-fill fs-2 mb-2"></i>
+                    <h6 class="card-title text-truncate">Total Internships</h6>
+                    <h3 class="fw-bold">{{ total_internships }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-md-4 col-sm-6">
+            <div class="card text-white shadow-lg rounded-4 p-3 border-0" style="background: linear-gradient(135deg,#1cc88a,#17a673);">
+                <div class="card-body text-center">
+                    <i class="bi bi-file-earmark-text-fill fs-2 mb-2"></i>
+                    <h6 class="card-title text-truncate">Total Applications</h6>
+                    <h3 class="fw-bold">{{ total_applications }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-md-4 col-sm-6">
+            <div class="card text-white shadow-lg rounded-4 p-3 border-0" style="background: linear-gradient(135deg,#f6c23e,#dda20a);">
+                <div class="card-body text-center">
+                    <i class="bi bi-hourglass-split fs-2 mb-2"></i>
+                    <h6 class="card-title text-truncate">Pending</h6>
+                    <h3 class="fw-bold">{{ pending_permissions }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-md-4 col-sm-6">
+            <div class="card text-white shadow-lg rounded-4 p-3 border-0" style="background: linear-gradient(135deg,#1cc88a,#138f70);">
+                <div class="card-body text-center">
+                    <i class="bi bi-check-circle-fill fs-2 mb-2"></i>
+                    <h6 class="card-title text-truncate">Approved</h6>
+                    <h3 class="fw-bold">{{ approved_permissions }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-md-4 col-sm-6">
+            <div class="card text-white shadow-lg rounded-4 p-3 border-0" style="background: linear-gradient(135deg,#36b9cc,#0d6efd);">
+                <div class="card-body text-center">
+                    <i class="bi bi-trophy-fill fs-2 mb-2"></i>
+                    <h6 class="card-title text-truncate">Completed</h6>
+                    <h3 class="fw-bold">{{ completed_permissions }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-md-4 col-sm-6">
+            <div class="card text-white shadow-lg rounded-4 p-3 border-0" style="background: linear-gradient(135deg,#e74a3b,#c0392b);">
+                <div class="card-body text-center">
+                    <i class="bi bi-bell-fill fs-2 mb-2"></i>
+                    <h6 class="card-title text-truncate">New Requests</h6>
+                    <h3 class="fw-bold">{{ new_requests }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="row g-4 mb-5">
+        <div class="col-lg-6">
+            <div class="card shadow-sm rounded-4 p-4 bg-white">
+                <h5 class="text-primary fw-semibold mb-3">Permission Status Overview</h5>
+                <canvas id="permissionChart" height="250"></canvas>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card shadow-sm rounded-4 p-4 bg-white">
+                <h5 class="text-primary fw-semibold mb-3">Applications per Internship</h5>
+                <canvas id="applicationsChart" height="250"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- My Internships Table -->
+    <div class="mb-5">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <h4 class="text-primary fw-semibold">My Internships</h4>
+            <a href="{% url 'add_internship' %}" class="btn btn-primary shadow-sm">
+                <i class="bi bi-plus-circle me-1"></i> Add Internship
+            </a>
+        </div>
+
+        <div class="table-responsive shadow-lg rounded-4 bg-white">
+            <table class="table table-hover table-striped align-middle mb-0">
+                <thead class="table-light text-secondary text-uppercase">
+                    <tr>
+                        <th>Title</th>
+                        <th>Applications</th>
+                        <th>Approved</th>
+                        <th>Completed</th>
+                        <th>Deadline</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stat in internship_stats %}
+                    <tr>
+                        <td class="fw-semibold text-primary">{{ stat.internship.title }}</td>
+                        <td><span class="badge bg-info text-white">{{ stat.app_count }}</span></td>
+                        <td><span class="badge bg-success">{{ stat.approved_count }}</span></td>
+                        <td><span class="badge bg-primary">{{ stat.completed_count }}</span></td>
+                        <td class="text-danger fw-semibold">{{ stat.internship.deadline|date:"d M Y" }}</td>
+                        <td class="text-center">
+                            <a href="{% url 'internship_detail' stat.internship.id %}" class="btn btn-outline-primary btn-sm shadow-sm">
+                                <i class="bi bi-eye-fill"></i> View
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center py-4 text-muted">No internships yet. <a href="{% url 'add_internship' %}">Add your first internship</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const pending = {{ pending_permissions }};
+    const approved = {{ approved_permissions }};
+    const completed = {{ completed_permissions }};
+
+    new Chart(document.getElementById('permissionChart'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Pending', 'Approved', 'Completed'],
+            datasets: [{
+                data: [pending, approved, completed],
+                backgroundColor: ['#f6c23e','#1cc88a','#36b9cc'],
+                borderWidth: 1
+            }]
+        },
+        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+    });
+
+    const appLabels = [{% for item in internship_app_counts %}'{{ item.title|escapejs }}'{% if not forloop.last %}, {% endif %}{% endfor %}];
+    const appData = [{% for item in internship_app_counts %}{{ item.count }}{% if not forloop.last %}, {% endif %}{% endfor %}];
+
+    if (appLabels.length > 0) {
+        new Chart(document.getElementById('applicationsChart'), {
+            type: 'bar',
+            data: {
+                labels: appLabels,
+                datasets: [{
+                    label: 'Applications',
+                    data: appData,
+                    backgroundColor: '#4e73df'
+                }]
+            },
+            options: { responsive: true, scales: { y: { beginAtZero: true } }, plugins: { legend: { display: false } } }
+        });
+    } else {
+        document.getElementById('applicationsChart').parentElement.innerHTML = '<p class="text-muted text-center py-4">No internship data yet</p>';
+    }
+
+    document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('mouseover', function() { this.style.transform = 'scale(1.02)'; });
+        card.addEventListener('mouseout', function() { this.style.transform = 'scale(1)'; });
+    });
+</script>
+{% endblock %}

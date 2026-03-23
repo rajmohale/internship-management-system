@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h2 class="mb-4">My Internship Requests</h2>
+
+<div class="card shadow">
+
+<div class="card-body">
+
+<table class="table table-bordered table-hover align-middle">
+
+<thead class="table-dark">
+
+<tr>
+<th>Internship</th>
+<th>Status</th>
+<th>Offer Letter</th>
+<th>Completion</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for p in permissions %}
+
+<tr>
+
+<td>{{ p.internship.title }}</td>
+
+<td>
+
+{% if p.status == "pending_faculty" %} <span class="badge bg-warning text-dark">Pending Faculty</span>
+
+{% elif p.status == "pending_hod" %} <span class="badge bg-info">Pending HOD</span>
+
+{% elif p.status == "approved" %} <span class="badge bg-success">Approved</span>
+
+{% elif p.status == "rejected" %} <span class="badge bg-danger">Rejected</span>
+
+{% elif p.status == "completed" %} <span class="badge bg-primary">Completed</span>
+
+{% endif %}
+
+</td>
+
+<td>
+
+{% if p.offer_letter %} <a href="{{ p.offer_letter.url }}" class="btn btn-sm btn-secondary">
+View </a>
+{% else %}
+----------
+
+{% endif %}
+
+</td>
+
+<td>
+
+{% if p.status == "approved" %}
+
+<a href="{% url 'submit_completion' p.id %}" class="btn btn-sm btn-success">
+Upload Certificate
+</a>
+
+{% elif p.status == "completed" %}
+
+{% if p.completion_certificate %} <a href="{{ p.completion_certificate.url }}" class="btn btn-sm btn-primary">
+View Certificate </a>
+{% else %}
+Submitted
+{% endif %}
+
+{% else %}
+—
+{% endif %}
+
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+<td colspan="4" class="text-center text-muted">
+No internship requests found
+</td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

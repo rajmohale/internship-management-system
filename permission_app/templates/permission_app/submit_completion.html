@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="row justify-content-center">
+
+<div class="col-md-6">
+
+<div class="card shadow-lg">
+
+<div class="card-header bg-success text-white text-center">
+<h4>Upload Completion Certificate</h4>
+</div>
+
+<div class="card-body">
+
+<form method="POST" enctype="multipart/form-data">
+
+{% csrf_token %}
+
+<div class="mb-3">
+<label class="form-label">Completion Certificate</label>
+{{ form.completion_certificate }}
+</div>
+
+<div class="mb-3">
+<label class="form-label">Feedback</label>
+{{ form.feedback }}
+</div>
+
+<div class="d-grid">
+<button type="submit" class="btn btn-primary">
+Submit Completion
+</button>
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

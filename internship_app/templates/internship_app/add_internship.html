@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Internship{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Add New Internship</h2>
+
+    <!-- Display messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %}" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST" action="">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="title" class="form-label">Title *</label>
+            <input type="text" class="form-control" id="title" name="title" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="description" class="form-label">Description *</label>
+            <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="deadline" class="form-label">Deadline *</label>
+            <input type="date" class="form-control" id="deadline" name="deadline" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="duration" class="form-label">Duration</label>
+            <input type="text" class="form-control" id="duration" name="duration" placeholder="e.g., 3 months">
+        </div>
+
+        <div class="mb-3">
+            <label for="location" class="form-label">Location</label>
+            <input type="text" class="form-control" id="location" name="location" placeholder="e.g., New York">
+        </div>
+
+        <div class="mb-3">
+            <label for="company_name" class="form-label">Industry / Company Name</label>
+            <input type="text" class="form-control" id="company_name" name="company_name" placeholder="e.g., TCS" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="domain" class="form-label">Internship Domain</label>
+            <input type="text" class="form-control" id="domain" name="domain" placeholder="e.g., Web Development" required>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="start_date" class="form-label">Start Date</label>
+                <input type="date" class="form-control" id="start_date" name="start_date" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="end_date" class="form-label">End Date</label>
+                <input type="date" class="form-control" id="end_date" name="end_date" required>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="internship_mode" class="form-label">Internship Mode</label>
+                <select id="internship_mode" name="internship_mode" class="form-select" required>
+                    <option value="" selected disabled>Select mode</option>
+                    <option value="online">Online</option>
+                    <option value="offline">Offline</option>
+                    <option value="hybrid">Hybrid</option>
+                </select>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="stipend_type" class="form-label">Paid or Unpaid</label>
+                <select id="stipend_type" name="stipend_type" class="form-select" required>
+                    <option value="" selected disabled>Select stipend type</option>
+                    <option value="paid">Paid</option>
+                    <option value="unpaid">Unpaid</option>
+                </select>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="stipend_amount" class="form-label">Stipend Amount (INR)</label>
+            <input type="number" step="0.01" min="0" class="form-control" id="stipend_amount" name="stipend_amount" placeholder="e.g., 10000">
+            <small class="text-muted">Required when internship is marked as paid.</small>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add Internship</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Pending Offer Letter Approvals{% endblock %}
+{% block page_title %}Pending Offer Letter Approvals{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+<h2 class="mb-4 text-primary fw-bold">Pending Offer Letter Approvals</h2>
+
+<!-- Search by Class -->
+<form method="GET" class="row g-3 mb-4">
+    <div class="col-md-4">
+        <label class="form-label">Filter by Class</label>
+        <select name="class" class="form-select">
+            <option value="">All Classes</option>
+            <option value="ce1" {% if search_class == 'ce1' %}selected{% endif %}>CE1</option>
+            <option value="ce2" {% if search_class == 'ce2' %}selected{% endif %}>CE2</option>
+            <option value="it1" {% if search_class == 'it1' %}selected{% endif %}>IT1</option>
+            <option value="it2" {% if search_class == 'it2' %}selected{% endif %}>IT2</option>
+            <option value="aids" {% if search_class == 'aids' %}selected{% endif %}>AIDS</option>
+            <option value="aids2" {% if search_class == 'aids2' %}selected{% endif %}>AIDS2</option>
+            <option value="ele1" {% if search_class == 'ele1' %}selected{% endif %}>ELE1</option>
+            <option value="ele2" {% if search_class == 'ele2' %}selected{% endif %}>ELE2</option>
+            <option value="mech1" {% if search_class == 'mech1' %}selected{% endif %}>MECH1</option>
+            <option value="mech2" {% if search_class == 'mech2' %}selected{% endif %}>MECH2</option>
+            <option value="entc1" {% if search_class == 'entc1' %}selected{% endif %}>ENTC1</option>
+            <option value="entc2" {% if search_class == 'entc2' %}selected{% endif %}>ENTC2</option>
+        </select>
+    </div>
+    <div class="col-md-2 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary"><i class="bi bi-search me-1"></i> Search</button>
+    </div>
+</form>
+
+<div class="card shadow">
+<div class="card-body">
+<div class="table-responsive">
+<table class="table table-bordered table-hover align-middle">
+
+<thead class="table-dark">
+<tr>
+<th>Student</th>
+<th>Class</th>
+<th>Internship</th>
+<th>Offer Letter</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for perm in requests %}
+
+<tr>
+<td>{{ perm.student.first_name }} {{ perm.student.last_name }}</td>
+<td><span class="badge bg-info">{{ perm.student.get_student_class_display|default:perm.student.student_class|default:"—" }}</span></td>
+<td>{{ perm.internship.title }}</td>
+
+<td>
+
+{% if perm.offer_letter %} <a href="{{ perm.offer_letter.url }}" class="btn btn-sm btn-secondary">
+View </a>
+{% else %} <span class="text-muted">No File</span>
+{% endif %}
+
+</td>
+
+<td>
+
+{% if perm.status == "pending_faculty" %} <span class="badge bg-warning text-dark">Pending Faculty</span>
+
+{% elif perm.status == "pending_hod" %} <span class="badge bg-info">Pending HOD</span>
+
+{% endif %}
+
+</td>
+
+<td>
+<form method="POST" action="{% url 'approve_request' perm.id %}" class="d-inline">{% csrf_token %}<button type="submit" class="btn btn-sm btn-success">Approve</button></form>
+<form method="POST" action="{% url 'reject_request' perm.id %}" class="d-inline">{% csrf_token %}<button type="submit" class="btn btn-sm btn-danger">Reject</button></form>
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+<td colspan="6" class="text-center text-muted">
+No pending approvals
+</td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}

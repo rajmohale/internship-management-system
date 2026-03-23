@@ -1,0 +1,235 @@
+{% extends "base.html" %}
+
+{% block title %}Student Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h3 class="mb-4">Student Dashboard</h3>
+
+<!-- ================= SUMMARY CARDS ================= -->
+
+<div class="row g-4">
+
+<div class="col-md-2">
+<div class="card text-white bg-primary shadow text-center">
+<div class="card-body">
+<h3>{{ total_applied }}</h3>
+<p>Applied</p>
+</div>
+</div>
+</div>
+
+<div class="col-md-2">
+<div class="card text-white bg-success shadow text-center">
+<div class="card-body">
+<h3>{{ approved }}</h3>
+<p>Approved</p>
+</div>
+</div>
+</div>
+
+<div class="col-md-2">
+<div class="card text-dark bg-warning shadow text-center">
+<div class="card-body">
+<h3>{{ pending }}</h3>
+<p>Pending</p>
+</div>
+</div>
+</div>
+
+<div class="col-md-2">
+<div class="card text-white bg-info shadow text-center">
+<div class="card-body">
+<h3>{{ completed }}</h3>
+<p>Completed</p>
+</div>
+</div>
+</div>
+
+<div class="col-md-2">
+<div class="card text-white bg-danger shadow text-center">
+<div class="card-body">
+<h3>{{ rejected }}</h3>
+<p>Rejected</p>
+</div>
+</div>
+</div>
+
+</div>
+
+<hr class="my-4">
+
+<!-- ================= CHARTS ================= -->
+
+<div class="row">
+
+<!-- PIE CHART -->
+
+<div class="col-md-6">
+
+<div class="card shadow">
+
+<div class="card-header">
+Application Status Distribution
+</div>
+
+<div class="card-body">
+
+<canvas id="statusChart"></canvas>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- BAR CHART -->
+
+<div class="col-md-6">
+
+<div class="card shadow">
+
+<div class="card-header">
+Applications Comparison
+</div>
+
+<div class="card-body">
+
+<canvas id="comparisonChart"></canvas>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ================= CHART JS ================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const dataValues = [
+{{ total_applied }},
+{{ approved }},
+{{ pending }},
+{{ completed }},
+{{ rejected }}
+];
+
+const labels = [
+'Applied',
+'Approved',
+'Pending',
+'Completed',
+'Rejected'
+];
+
+const colors = [
+'#0d6efd',
+'#198754',
+'#ffc107',
+'#0dcaf0',
+'#dc3545'
+];
+
+
+/* ================= DOUGHNUT CHART ================= */
+
+new Chart(
+document.getElementById('statusChart'),
+{
+type:'doughnut',
+
+data:{
+labels:labels,
+
+datasets:[{
+data:dataValues,
+backgroundColor:colors,
+borderWidth:2
+}]
+},
+
+options:{
+responsive:true,
+
+animation:{
+animateRotate:true,
+animateScale:true
+},
+
+plugins:{
+legend:{
+position:'bottom'
+}
+}
+
+}
+
+}
+);
+
+
+
+/* ================= BAR CHART ================= */
+
+new Chart(
+document.getElementById('comparisonChart'),
+{
+
+type:'bar',
+
+data:{
+labels:labels,
+
+datasets:[{
+
+label:'Applications',
+
+data:dataValues,
+
+backgroundColor:colors,
+
+borderRadius:6
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+animation:{
+duration:2000
+},
+
+plugins:{
+legend:{
+display:false
+}
+},
+
+scales:{
+y:{
+beginAtZero:true
+}
+}
+
+}
+
+}
+
+);
+
+</script>
+
+{% endblock %}

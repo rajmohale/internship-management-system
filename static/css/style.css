@@ -1,0 +1,20 @@
+body{
+background:#f4f6f9;
+}
+
+.card{
+border-radius:12px;
+}
+
+.sidebar{
+background:white;
+box-shadow:0px 2px 10px rgba(0,0,0,0.1);
+}
+
+.table{
+background:white;
+}
+
+.btn{
+border-radius:8px;
+}

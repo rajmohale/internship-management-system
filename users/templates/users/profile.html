@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile{% endblock %}
+{% block page_title %}My Profile{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="card shadow-lg rounded-4 overflow-hidden">
+        <div class="card-body p-4">
+            <div class="row align-items-center">
+                <div class="col-md-4 text-center mb-4 mb-md-0">
+                    {% if user.profile_picture %}
+                    <img src="{{ user.profile_picture.url }}" width="180" height="180" class="rounded-circle object-fit-cover shadow">
+                    {% else %}
+                    <div class="rounded-circle bg-primary d-inline-flex align-items-center justify-content-center text-white fw-bold display-4" style="width:180px;height:180px;">
+                        {{ user.first_name|slice:":1"|upper }}{{ user.last_name|slice:":1"|upper }}
+                    </div>
+                    {% endif %}
+                    <a href="{% url 'edit_profile' %}" class="btn btn-primary mt-3">
+                        <i class="bi bi-pencil me-1"></i> Edit Profile
+                    </a>
+                </div>
+                <div class="col-md-8">
+                    <h4 class="text-primary fw-bold mb-4">{{ user.first_name }} {{ user.last_name }}</h4>
+                    <div class="row g-3">
+                        <div class="col-md-6"><strong>Email:</strong> {{ user.email }}</div>
+                        <div class="col-md-6"><strong>Role:</strong> <span class="badge bg-info">{{ user.get_role_display|default:user.role|title }}</span></div>
+                        <div class="col-md-6"><strong>Phone:</strong> {{ user.phone_number|default:"—" }}</div>
+                        <div class="col-md-6"><strong>Department:</strong> {{ user.department|default:"—" }}</div>
+                        {% if user.role == 'student' %}
+                        <div class="col-md-6"><strong>Class:</strong> {{ user.get_student_class_display|default:user.student_class|default:"—" }}</div>
+                        <div class="col-md-6"><strong>Branch:</strong> {{ user.branch|default:"—" }}</div>
+                        <div class="col-md-6"><strong>Year:</strong> {{ user.year|default:"—" }}</div>
+                        <div class="col-md-6"><strong>PRN:</strong> {{ user.prn|default:"—" }}</div>
+                        {% endif %}
+                        {% if user.skills %}
+                        <div class="col-12"><strong>Skills:</strong><br>{{ user.skills }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

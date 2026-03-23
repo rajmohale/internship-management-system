@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ internship.title }}{% endblock %}
+{% block page_title %}Internship Details{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="card shadow-lg rounded-4 overflow-hidden">
+        <div class="card-header bg-primary text-white py-4">
+            <h3 class="mb-0"><i class="bi bi-briefcase-fill me-2"></i>{{ internship.title }}</h3>
+        </div>
+        <div class="card-body p-4">
+            <div class="row g-4">
+                <div class="col-md-8">
+                    <h5 class="text-primary fw-semibold">Description</h5>
+                    <p class="text-secondary">{{ internship.description }}</p>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <p class="mb-2"><strong>Faculty:</strong><br>{{ internship.faculty.first_name }} {{ internship.faculty.last_name }}</p>
+                            <p class="mb-2"><strong>Deadline:</strong><br><span class="text-danger fw-semibold">{{ internship.deadline|date:"F d, Y" }}</span></p>
+                            {% if internship.duration %}<p class="mb-2"><strong>Duration:</strong><br>{{ internship.duration }}</p>{% endif %}
+                            {% if internship.location %}<p class="mb-2"><strong>Location:</strong><br>{{ internship.location }}</p>{% endif %}
+                            <p class="mb-2"><strong>Industry:</strong><br>{{ internship.company_name|default:"NA" }}</p>
+                            <p class="mb-2"><strong>Domain:</strong><br>{{ internship.domain|default:"NA" }}</p>
+                            <p class="mb-2"><strong>Mode:</strong><br>{{ internship.get_internship_mode_display|default:"NA" }}</p>
+                            <p class="mb-2"><strong>Paid/Unpaid:</strong><br>{{ internship.get_stipend_type_display|default:"NA" }}</p>
+                            <p class="mb-2"><strong>Stipend:</strong><br>{% if internship.stipend_amount %}INR {{ internship.stipend_amount }}{% else %}NA{% endif %}</p>
+                            <p class="mb-2"><strong>Start Date:</strong><br>{{ internship.start_date|date:"F d, Y"|default:"NA" }}</p>
+                            <p class="mb-2"><strong>End Date:</strong><br>{{ internship.end_date|date:"F d, Y"|default:"NA" }}</p>
+                            <p class="mb-0"><strong>Status:</strong> <span class="badge bg-success">{{ internship.status }}</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4">
+                {% if user.role == 'student' %}
+                <a href="{% url 'apply_internship' internship.id %}" class="btn btn-success btn-lg">
+                    <i class="bi bi-send-fill me-1"></i> Apply Now
+                </a>
+                {% endif %}
+                <a href="{% url 'internship_list' %}" class="btn btn-outline-secondary btn-lg">
+                    <i class="bi bi-arrow-left me-1"></i> Back to Internships
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
